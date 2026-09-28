@@ -69,7 +69,7 @@ agentd 依赖 `contracts` / `shared` / `metrics` / `validate`；`metrics`、`val
 4. `wist-validate`（等 contracts）
 5. `wist-agentd`（**制品**：把 `path` 依赖切回 registry 后走 tarball 发布）
 
-每一步（组件）：需要升版就 `gx adm v_patch` / `v_feat` → `gx run lint` → `cargo test --all` → `commit` + `push` → `gx adm v_tag`（CI `cargo publish`）。最后一步（agentd）：依赖都上了 crates.io 后，去掉它的 `path` 依赖改回 registry → `gx run lint` → `cargo test --all` → `push` → `gx adm tag_stable`。
+每一步（组件）：需要升版就 `gx adm v_patch` / `v_feat` → `gx run lint` → `cargo test --all` → `commit` + `push` → `gx adm v_tag`（CI `cargo publish`）。最后一步（agentd）：依赖都上了 crates.io 后，去掉它的 `path` 依赖改回 registry → **升版后跑一次 `cargo update -p wist-agentd` 同步并提交 `Cargo.lock`** → `gx run lint` → `cargo test --all` → `push` → `gx adm tag_stable`。
 
 ## 注意
 

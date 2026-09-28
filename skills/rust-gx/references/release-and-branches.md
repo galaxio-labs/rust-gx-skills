@@ -25,6 +25,7 @@
 
 1. **提交前**：跑该仓支持的检查命令，至少 `gx run lint`（必要时再 `gx run test`）。
 2. **版本变更后**：确认所有版本号都已更新（`gx adm v_patch` / `v_feat` 改 `version.txt` 并同步 `Cargo.toml`），再跑 **`cargo test --all`**（工作区全量测试）。
+   - **制品**还需**同步 `Cargo.lock`**：`gx adm v_patch` / `v_feat` 不动锁，需跑一次 `cargo update -p <本包名>`（或 `cargo check`）让锁里的版本跟上，并把 `Cargo.lock` 连同 `Cargo.toml` + `version.txt` 一起提交；**组件**锁不入库，无需此步。详见 [版本管理](version-management.md) §6。
 3. **提交**：`git commit` + `git push`。
 4. **打标签**（在 commit / push **之后**）：
    - **组件**（在 `main`）：`gx adm v_tag`。

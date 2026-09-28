@@ -44,6 +44,8 @@
 
 这与「发布通道」一致：组件只到 `main`，制品才走 `alpha → beta → main`。见 [发布与分支约定](release-and-branches.md)。
 
+> **锁文件归属**：**组件**（library）**不**入库 `Cargo.lock`；**制品**（bin / docker）**要**入库 `Cargo.lock`，且版本变更时锁里的本包版本必须与 `Cargo.toml` 同步（见 §6）。
+
 ## 5. 参考实现
 
 本机一份**组件**示例：`x-topology/wist/wist-contracts`
@@ -56,3 +58,6 @@
 - **别手改** `version.txt` 或带 marker 的版本行来“升版本” —— 走 `gx adm`，否则 `version.txt` 与文件会分叉。
 - 打标签前先定版本（`v_patch` / `v_feat`），否则 `tag_*` / `v_tag` 用的是旧号。
 - marker 只认 `@gxl:set(...)` 这类注释形式；不要把 marker 写进被同步行以外的位置。
+- **制品升版本后要同步并提交 `Cargo.lock`**：`gx adm v_patch` / `v_feat` **只改 `Cargo.toml` 与 `version.txt`，不动 `Cargo.lock`**，锁里的本包版本会落后。补一次 `cargo update -p <本包名>`（或 `cargo check` / `cargo build`）让锁版本跟上，再连同 `Cargo.toml` + `version.txt` + `Cargo.lock` 一起提交。打 tag 前工作区必须干净、三者版本一致。
+  - **组件**：锁不入库，无需上述步骤；
+  - **制品**：锁入库，**必须**同步，否则入库的锁与 `Cargo.toml` 分叉（构建未必报错，但历史的可复现性被破坏）。
