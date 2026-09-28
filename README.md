@@ -19,7 +19,7 @@
 
 | 技能 | 说明 |
 |---|---|
-| [`rust-gx`](./skills/rust-gx/SKILL.md) | 用 gx 开发/构建/检查/测试/发版 Rust 项目：`gx init project --path rust` 初始化 `_gal/`，`gx run build\|lint\|test`，`gx adm v_patch/v_feat/v_tag/tag_*` 管版本与发布，多 crate 的 `path` 联调与按依赖序发 crates.io，`.github` 工作流模板。 |
+| [`rust-gx`](./skills/rust-gx/SKILL.md) | 用 gx 开发/构建/检查/测试/发版 Rust 项目：`gx init project --path rust` 初始化 `_gal/`，`gx run build\|lint\|test`，`gx adm v_patch/v_feat/v_tag/tag_*` 管版本与发布，发版前用 `version.txt` 版本 + 日期写 `CHANGELOG.md`，多 crate 的 `path` 联调与按依赖序发 crates.io，`.github` 工作流模板。 |
 
 ## 结构
 

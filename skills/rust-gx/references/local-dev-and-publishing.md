@@ -36,6 +36,7 @@
 
 1. **开发**：消费方切 `path`（**整条链**）。
 2. **测试**：`cargo test --all`（见 [发布与分支约定](release-and-branches.md) §3）。
+   - 发布前先写 `CHANGELOG.md`（标题 = `version.txt` 版本 + 日期；简洁、写使用者价值）。
 3. **本地排演**：按依赖序逐个 `cargo publish --dry-run`，核对打包与依赖（**不上传**）。注意它**要求工作树干净**：升版未提交会被拒 —— 先 commit 升版，或临时加 `--allow-dirty`。
 4. **发布依赖**：给每个被依赖的组件打 `v_tag` 并 push → `.github/workflows/release.yml` 发到 crates.io；`-dryrun` 标签只演练。
 5. **切换**：消费方去掉 `path`，改回 registry 版本。
@@ -69,7 +70,7 @@ agentd 依赖 `contracts` / `shared` / `metrics` / `validate`；`metrics`、`val
 4. `wist-validate`（等 contracts）
 5. `wist-agentd`（**制品**：把 `path` 依赖切回 registry 后走 tarball 发布）
 
-每一步（组件）：需要升版就 `gx adm v_patch` / `v_feat` → `gx run lint` → `cargo test --all` → `commit` + `push` → `gx adm v_tag`（CI `cargo publish`）。最后一步（agentd）：依赖都上了 crates.io 后，去掉它的 `path` 依赖改回 registry → **升版后跑一次 `cargo update -p wist-agentd` 同步并提交 `Cargo.lock`** → `gx run lint` → `cargo test --all` → `push` → `gx adm tag_stable`。
+每一步（组件）：需要升版就 `gx adm v_patch` / `v_feat` → `gx run lint` → `cargo test --all` → **更新 `CHANGELOG.md`**（标题读 `version.txt`，见 [发布与分支约定](release-and-branches.md) §4）→ `commit` + `push` → `gx adm v_tag`（CI `cargo publish`）。最后一步（agentd）：依赖都上了 crates.io 后，去掉它的 `path` 依赖改回 registry → **升版后跑一次 `cargo update -p wist-agentd` 同步并提交 `Cargo.lock`** → `gx run lint` → `cargo test --all` → **更新 `CHANGELOG.md`** → `push` → `gx adm tag_stable`。
 
 ## 注意
 
